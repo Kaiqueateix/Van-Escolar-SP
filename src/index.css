@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --tx: #0f172a;
+  --mut: #64748b;
+  --bd: #e2e8f0;
+  --pri: #ffc400;
+  --on: #10263b;
+  --ok: #16a34a;
+  --bad: #dc2626;
+  --rt: #0284c7;
+  font-family: 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: light;
+}
+
+html.dark, [data-theme="dark"] {
+  --bg: #080d14;
+  --card: #111a24;
+  --tx: #f8fafc;
+  --mut: #94a3b8;
+  --bd: #1e293b;
+  --rt: #38bdf8;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg);
+  color: var(--tx);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Safe areas for mobile PWA & App Stores (iOS / Android) */
+.pb-safe {
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+}
+.pt-safe {
+  padding-top: calc(0.5rem + env(safe-area-inset-top, 0px));
+}

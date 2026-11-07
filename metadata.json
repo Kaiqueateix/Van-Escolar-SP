@@ -1,0 +1,6 @@
+{
+  "name": "Van Escolar SP - Plataforma de Transporte Escolar",
+  "description": "Plataforma completa de transporte escolar em São Paulo conectando famílias e transportadores escolares credenciados com rastreamento GPS, gestão financeira e segurança.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

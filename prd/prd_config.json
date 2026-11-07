@@ -1,0 +1,78 @@
+{
+  "appName": "Van Escolar SP",
+  "version": "2.4.0",
+  "environment": "development",
+  "baseUrl": "http://localhost:3000",
+  "firebaseProjectId": "conductive-approach-gbvhw",
+  "firestoreDatabaseId": "ai-studio-vanescolarspplat-505406e5-684b-4662-8f63-cf98733b325a",
+  "roles": [
+    {
+      "id": "c",
+      "name": "Responsável / Pai",
+      "features": [
+        "netflix_child_profile_switcher",
+        "search_and_compare_transporters",
+        "digital_contract_signing_smartvan",
+        "realtime_gps_tracking",
+        "pix_payment_generation"
+      ]
+    },
+    {
+      "id": "t",
+      "name": "Transportador Escolar",
+      "features": [
+        "opportunities_board",
+        "instant_interest_notification",
+        "parent_reputation_view",
+        "subscription_tiers_free_pro_premium",
+        "dtp_verification_documents",
+        "ai_route_optimizer",
+        "expense_tracking"
+      ]
+    },
+    {
+      "id": "a",
+      "name": "Administrador / DTP",
+      "features": [
+        "transporter_verification_approval",
+        "review_moderation",
+        "user_status_management",
+        "audit_logs"
+      ]
+    }
+  ],
+  "subscriptionTiers": {
+    "free": {
+      "priceMonthly": 0,
+      "maxStudents": 5,
+      "routeOptimizerEnabled": false,
+      "expensesEnabled": false
+    },
+    "pro": {
+      "priceMonthly": 24.99,
+      "maxStudents": 40,
+      "routeOptimizerEnabled": false,
+      "expensesEnabled": true
+    },
+    "premium": {
+      "priceMonthly": 44.99,
+      "maxStudents": 9999,
+      "routeOptimizerEnabled": true,
+      "expensesEnabled": true
+    }
+  },
+  "testAccounts": {
+    "transporter": {
+      "email": "joao.batista@vanescolar.sp",
+      "role": "t"
+    },
+    "parent": {
+      "email": "marta.almeida@gmail.com",
+      "role": "c"
+    },
+    "admin": {
+      "email": "admin@vanescolar.sp",
+      "role": "a"
+    }
+  }
+}

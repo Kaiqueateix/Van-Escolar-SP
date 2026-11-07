@@ -1,0 +1,141 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-\\.:@]+$');
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        (request.auth.token.email != null && request.auth.token.email == 'kaiqueateix@gmail.com') ||
+        (request.auth.token.email != null && request.auth.token.email == 'admin@vanescolar.sp') ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    // Validation helper for UserProfile
+    function isValidUserProfile(data) {
+      return data.keys().hasAll(['email', 'name', 'role']) &&
+             data.email is string && data.email.size() <= 128 &&
+             data.name is string && data.name.size() <= 100 &&
+             data.role in ['c', 't', 'a'];
+    }
+
+    // Validation helper for TransporterProfile
+    function isValidTransporterProfile(data) {
+      return data.keys().hasAll(['id', 'name', 'email']) &&
+             data.id is string && data.id.size() <= 64 &&
+             data.name is string && data.name.size() <= 100 &&
+             data.email is string && data.email.size() <= 128;
+    }
+
+    // Validation helper for StudentItem
+    function isValidStudent(data) {
+      return data.keys().hasAll(['id', 'name', 'parentEmail', 'transporterEmail']) &&
+             data.id is string && data.id.size() <= 64 &&
+             data.name is string && data.name.size() <= 100 &&
+             data.parentEmail is string && data.parentEmail.size() <= 128 &&
+             data.transporterEmail is string && data.transporterEmail.size() <= 128;
+    }
+
+    // Validation helper for ContractRecord
+    function isValidContract(data) {
+      return data.keys().hasAll(['id', 'transporterEmail', 'parentEmail', 'childName', 'status']) &&
+             data.id is string && data.id.size() <= 64 &&
+             data.transporterEmail is string && data.transporterEmail.size() <= 128 &&
+             data.parentEmail is string && data.parentEmail.size() <= 128 &&
+             data.childName is string && data.childName.size() <= 100 &&
+             data.status in ['proposta_enviada', 'revisado_pelo_pai', 'assinado_ativo', 'cancelado', 'recusado'];
+    }
+
+    // Validation helper for SupportTicket
+    function isValidSupportTicket(data) {
+      return data.keys().hasAll(['id', 'userEmail', 'subject', 'message', 'status']) &&
+             data.id is string && data.id.size() <= 64 &&
+             data.userEmail is string && data.userEmail.size() <= 128 &&
+             data.subject is string && data.subject.size() <= 120 &&
+             data.message is string && data.message.size() <= 1000 &&
+             data.status in ['aberto', 'em_atendimento', 'resolvido'];
+    }
+
+    // 1. Users Collection
+    match /users/{userId} {
+      allow get: if isSignedIn() && (isOwner(userId) || isAdmin() || (request.auth.token.email != null && request.auth.token.email == existing().email));
+      allow list: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(userId) && isValidUserProfile(incoming());
+      allow update: if isSignedIn() && isValidId(userId) && isValidUserProfile(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // 2. Transporters Collection
+    match /transporters/{transporterId} {
+      allow get, list: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidTransporterProfile(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // 3. Students Collection
+    match /students/{studentId} {
+      allow get, list: if isSignedIn();
+      allow create: if isSignedIn() && isValidStudent(incoming());
+      allow update: if isSignedIn() && isValidStudent(incoming());
+      allow delete: if isSignedIn();
+    }
+
+    // 4. Contracts Collection
+    match /contracts/{contractId} {
+      allow get, list: if isSignedIn();
+      allow create: if isSignedIn() && isValidContract(incoming());
+      allow update: if isSignedIn() && isValidContract(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // 5. Support Tickets Collection
+    match /support_tickets/{ticketId} {
+      allow get, list: if isSignedIn();
+      allow create: if isSignedIn() && isValidSupportTicket(incoming());
+      allow update: if isSignedIn();
+      allow delete: if isAdmin();
+    }
+
+    // 6. Chats Collection
+    match /chats/{chatId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isSignedIn();
+    }
+
+    // 7. Opportunities Collection
+    match /opportunities/{oppId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isSignedIn();
+    }
+
+    // 8. Expenses Collection
+    match /expenses/{expenseId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isSignedIn();
+    }
+  }
+}

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Van Escolar SP</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap">
+<style>
+:root{--bg:#eef2f5;--card:#fff;--tx:#10263b;--mut:#5d6f80;--bd:#d6dee6;--pri:#ffc400;--on:#10263b;--ok:#1b8a52;--bad:#c93c3c;--rt:#0f7f8c;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1822;--card:#16232f;--tx:#eaf0f5;--mut:#93a5b5;--bd:#26384a;--rt:#4cc3d1;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1822;--card:#16232f;--tx:#eaf0f5;--mut:#93a5b5;--bd:#26384a;--rt:#4cc3d1;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+#app{max-width:560px;margin:0 auto;padding:14px 14px 96px}
+h1,h2,h3{margin:0;line-height:1.15}
+h1{font-size:28px;font-weight:900}h2{font-size:20px;font-weight:900;margin:6px 0 10px}h3{font-size:16px;font-weight:800}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:10px}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.mut{color:var(--mut);font-size:14px}
+.btn{border:0;border-radius:10px;padding:12px 16px;font:inherit;font-weight:800;background:var(--pri);color:var(--on);cursor:pointer;width:100%}
+.btn.sm{width:auto;padding:8px 12px;font-size:14px}
+.btn.alt{background:transparent;color:var(--tx);border:1.5px solid var(--bd)}
+.btn:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--rt);outline-offset:2px}
+input,select{width:100%;padding:12px;border-radius:10px;border:1.5px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit;margin:4px 0 10px}
+label{font-weight:700;font-size:14px}
+.chips{display:flex;gap:8px;margin-bottom:12px}
+.chip{flex:1;padding:12px;border-radius:12px;border:2px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;font-weight:800;cursor:pointer}
+.chip.on{border-color:var(--pri);background:var(--pri);color:var(--on)}
+.tag{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:800;background:var(--bd);color:var(--tx)}
+.tag.ok{background:var(--ok);color:#fff}.tag.bad{background:var(--bad);color:#fff}.tag.pro{background:var(--pri);color:var(--on)}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--bd);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+nav button{flex:1;background:none;border:0;color:var(--mut);font:inherit;font-size:12px;font-weight:800;padding:6px 2px;cursor:pointer;border-radius:10px}
+nav button b{display:block;font-size:20px}
+nav button.on{color:var(--tx);background:var(--pri)}
+.band{background:var(--on);color:#fff;border-radius:14px;padding:14px;margin-bottom:12px}
+.band .btn{margin-top:10px}
+.stop{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--bd)}
+.stop:last-child{border:0}
+.dot{min-width:30px;height:30px;border-radius:50%;background:var(--rt);color:#fff;display:grid;place-items:center;font-weight:900;font-size:14px}
+.toast{position:fixed;left:14px;right:14px;top:calc(12px + env(safe-area-inset-top,0px));background:var(--on);color:#fff;border-left:6px solid var(--pri);padding:12px 14px;border-radius:12px;z-index:9;font-weight:700}
+.msgs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.m{max-width:80%;padding:8px 12px;border-radius:14px;font-size:15px}
+.m.me{align-self:flex-end;background:var(--pri);color:var(--on)}
+.m.t{align-self:flex-start;background:var(--card);border:1px solid var(--bd)}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:8px 4px;border-bottom:1px solid var(--bd);text-align:left}
+a{color:var(--rt);font-weight:800}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const R=["Zona Sul","Zona Norte","Zona Leste","Zona Oeste","Centro","Grande ABC"];
+const SC=["EMEF Santa Rita","Colégio Objetivo Paulista","Escola Vera Cruz","Colégio São Luís","EE Padre Anchieta","Colégio Anglo Tatuapé"];
+const TR=[
+{id:"t1",n:"João Batista",v:"Sprinter 2020",r:[0,3],s:[0,1,3],vg:3,p:420,a:4.9},
+{id:"t2",n:"Márcia Souza",v:"Van Ducato 2019",r:[1],s:[2,4],vg:1,p:380,a:4.8},
+{id:"t3",n:"Carlos Pereira",v:"Master 2021",r:[2,5],s:[5,0],vg:5,p:450,a:4.7},
+{id:"t4",n:"Edna Ribeiro",v:"Sprinter 2018",r:[0,4],s:[1,3,4],vg:0,p:400,a:5.0}];
+const MEC=[["Diesel Center Tatuapé","Zona Leste","Sprinter, Master, Ducato","(11) 2294-1010"],["Mecânica Pé na Estrada","Zona Sul","Injeção diesel e turbina","(11) 5581-2020"],["Auto Diesel Santana","Zona Norte","Freios e suspensão de vans","(11) 2959-3030"],["Oficina do Zé Diesel","Grande ABC","Câmbio e embreagem","(11) 4427-4040"]];
+const VANS=[["Mercedes Sprinter 415","2020 · 16 lugares",180],["Renault Master Minibus","2021 · 16 lugares",170],["Fiat Ducato Minibus","2019 · 15 lugares",150],["Peugeot Boxer","2018 · 15 lugares",140]];
+const SEED=[{n:"Lucas Almeida",i:8,e:"EMEF Santa Rita",d:"Rua das Acácias, 120 - Jabaquara",r:"Marta Almeida",t:"(11) 98811-2233",o:"Alergia a amendoim",pg:1},{n:"Sofia Lima",i:10,e:"Colégio São Luís",d:"Av. Cupecê, 800 - Cidade Ademar",r:"Paulo Lima",t:"(11) 97722-3344",o:"",pg:0},{n:"Pedro Rocha",i:7,e:"EMEF Santa Rita",d:"Rua Gaivota, 55 - Moema",r:"Ana Rocha",t:"(11) 96633-4455",o:"Usa óculos",pg:0}];
+let db;try{db=JSON.parse(localStorage.getItem("vesp"))}catch(e){}
+db=db||{users:[],s:null,kids:{},plan:{},pays:[],chat:{},pick:{}};
+const save=()=>{try{localStorage.setItem("vesp",JSON.stringify(db))}catch(e){}};
+const me=()=>db.users.find(u=>u.email===db.s);
+const brl=n=>"R$ "+Number(n).toFixed(2).replace(".",",");
+const $=s=>document.querySelector(s);
+let mode="login",role="t",tab="k",addOpen=false,timer=null,eta=12,warned=false,sch=0,reg=0,searched=false,err="";
+const TTABS=[["k","👧","Crianças"],["m","🔧","Mecânicos"],["v","🚐","Vans"],["r","🗺️","Rota"],["p","💰","Pagar"]];
+const CTABS=[["b","🔎","Buscar"],["l","📍","Rastrear"],["p","💳","Pagar"],["c","💬","Chat"]];
+
+function toast(x){const d=document.createElement("div");d.className="toast";d.textContent=x;document.body.appendChild(d);setTimeout(()=>d.remove(),5000)}
+function go(t){tab=t;addOpen=false;render()}
+function render(){
+ clearInterval(timer);const u=me();
+ $("#app").innerHTML=!u?authV():u.role==="t"?tV(u):cV(u);
+ if(u&&u.role==="c"&&tab==="l"&&db.pick[u.email])track();
+ if(u&&tab==="c"){const m=$(".msgs");if(m)m.scrollIntoView({block:"end"})}
+}
+function authV(){return `<div style="padding:20px 0 14px"><div style="font-size:44px">🚌</div><h1>Van Escolar SP</h1><p class="mut">Transportadores e famílias de São Paulo, no mesmo lugar.</p></div>
+<div class="card"><div class="chips"><button class="chip ${mode==="login"?"on":""}" onclick="mode='login';err='';render()">Entrar</button><button class="chip ${mode==="reg"?"on":""}" onclick="mode='reg';err='';render()">Criar conta</button></div>
+${mode==="reg"?`<label>Eu sou</label><div class="chips"><button class="chip ${role==="t"?"on":""}" data-r="t" onclick="setRole('t')">🚐 Transportador</button><button class="chip ${role==="c"?"on":""}" data-r="c" onclick="setRole('c')">👨‍👩‍👧 Pai ou mãe</button></div><label>Nome completo</label><input id="nm" autocomplete="name">`:""}
+<label>E-mail</label><input id="em" type="email" autocomplete="email"><label>Senha</label><input id="pw" type="password" autocomplete="current-password">
+${err?`<p style="color:var(--bad);font-weight:800;margin:0 0 10px">${err}</p>`:""}
+<button class="btn" onclick="${mode==="reg"?"doReg()":"doLogin()"}">${mode==="reg"?"Criar conta":"Entrar"}</button></div>`}
+function setRole(r){role=r;document.querySelectorAll("[data-r]").forEach(b=>b.classList.toggle("on",b.dataset.r===r))}
+function doReg(){const n=$("#nm").value.trim(),e=$("#em").value.trim().toLowerCase(),p=$("#pw").value;
+ if(!n||!e||p.length<4){err="Preencha nome, e-mail e uma senha com 4 ou mais caracteres.";return render()}
+ if(db.users.some(u=>u.email===e)){err="Este e-mail já tem cadastro. Use Entrar.";return render()}
+ db.users.push({n,email:e,pw:p,role});if(role==="t")db.kids[e]=JSON.parse(JSON.stringify(SEED));db.s=e;err="";tab=role==="t"?"k":"b";save();render()}
+function doLogin(){const e=$("#em").value.trim().toLowerCase(),p=$("#pw").value,u=db.users.find(x=>x.email===e&&x.pw===p);
+ if(!u){err="E-mail ou senha incorretos.";return render()}db.s=e;err="";tab=u.role==="t"?"k":"b";save();render()}
+function out(){db.s=null;save();render()}
+function head(u){const pro=u.role==="t"&&db.plan[u.email];return `<div class="row" style="margin:4px 0 12px"><div><h1 style="font-size:22px">Olá, ${u.n.split(" ")[0]}</h1><span class="tag ${pro?"pro":""}">${u.role==="c"?"Família":pro?"⭐ Assinante":"Plano gratuito"}</span></div><button class="btn alt sm" onclick="out()">Sair</button></div>`}
+function nav(tabs){return `<nav>${tabs.map(t=>`<button class="${tab===t[0]?"on":""}" onclick="go('${t[0]}')"><b>${t[1]}</b>${t[2]}</button>`).join("")}</nav>`}
+
+/* ---------- TRANSPORTADOR ---------- */
+function tV(u){const pro=db.plan[u.email];let h=head(u);
+ if(!pro)h+=`<div class="band"><h3>Assine e destrave tudo ⭐</h3><p class="mut" style="color:#c3d0db;margin:4px 0 0">Rota sugerida para o percurso e tabela de pagamentos com pagamento dentro do app. <b style="color:var(--pri)">R$ 25,00 por semana.</b></p><button class="btn" onclick="sub()">Assinar agora</button></div>`;
+ else h+=`<div class="card row"><span class="mut">Assinatura ativa · R$ 25,00/semana</span><button class="btn alt sm" onclick="unsub()">Cancelar</button></div>`;
+ const lock=n=>`<div class="card" style="text-align:center"><div style="font-size:36px">🔒</div><h3>${n} é para assinantes</h3><p class="mut">Assine por R$ 25,00/semana para liberar.</p><button class="btn" onclick="sub()">Assinar agora</button></div>`;
+ if(tab==="k")h+=kidsV(u);
+ if(tab==="m")h+=`<h2>Mecânicos de veículos diesel</h2>`+MEC.map(m=>`<div class="card"><h3>${m[0]}</h3><div class="mut">${m[1]} · ${m[2]}</div><a href="tel:${m[3].replace(/\D/g,"")}">${m[3]}</a></div>`).join("");
+ if(tab==="v")h+=`<h2>Vans para locação</h2>`+VANS.map((v,i)=>`<div class="card row"><div><h3>${v[0]}</h3><div class="mut">${v[1]}</div><b>${brl(v[2])}/dia</b></div><button class="btn sm" onclick="toast('Pedido enviado ao locador. Ele entra em contato em breve.')">Tenho interesse</button></div>`).join("");
+ if(tab==="r")h+=pro?routeV(u):lock("A rota sugerida");
+ if(tab==="p")h+=pro?payV(u):lock("A tabela de pagamentos");
+ return `<div>${h}</div>`+nav(TTABS)}
+function sub(){db.plan[db.s]=true;save();toast("Assinatura ativada (simulação). Cobrança de R$ 25,00 por semana.");render()}
+function unsub(){delete db.plan[db.s];if(tab==="r"||tab==="p")tab="k";save();render()}
+function kidsV(u){const k=db.kids[u.email]||[];
+ let h=`<div class="row"><h2>Minhas crianças (${k.length})</h2><button class="btn sm" onclick="addOpen=!addOpen;render()">${addOpen?"Fechar":"+ Adicionar"}</button></div>`;
+ if(addOpen)h+=`<div class="card"><label>Nome da criança</label><input id="kn"><label>Idade</label><input id="ki" type="number"><label>Escola</label><select id="ke">${SC.map(s=>`<option>${s}</option>`).join("")}</select><label>Endereço de embarque</label><input id="kd"><label>Responsável</label><input id="kr"><label>Telefone</label><input id="kt" type="tel"><label>Observações</label><input id="ko"><button class="btn" onclick="addKid()">Salvar criança</button></div>`;
+ if(!k.length)h+=`<div class="card mut">Nenhuma criança ainda. Toque em Adicionar para cadastrar a primeira.</div>`;
+ return h+k.map((c,i)=>`<div class="card"><div class="row"><h3>${c.n}, ${c.i} anos</h3><button class="btn alt sm" onclick="delKid(${i})" aria-label="Remover">🗑</button></div><div class="mut">${c.e}</div><div>📍 ${c.d}</div><div>👤 ${c.r} · <a href="tel:${c.t.replace(/\D/g,"")}">${c.t}</a></div>${c.o?`<div class="mut">⚠️ ${c.o}</div>`:""}</div>`).join("")}
+function addKid(){const v=i=>$("#"+i).value.trim();if(!v("kn")||!v("kd")){toast("Informe ao menos nome e endereço.");return}
+ db.kids[db.s].push({n:v("kn"),i:v("ki")||"?",e:v("ke"),d:v("kd"),r:v("kr")||"—",t:v("kt")||"—",o:v("ko"),pg:0});addOpen=false;save();render()}
+function delKid(i){db.kids[db.s].splice(i,1);save();render()}
+function routeV(u){const k=db.kids[u.email]||[];if(!k.length)return `<div class="card mut">Cadastre crianças para gerar a rota.</div>`;
+ const o=[...k].sort((a,b)=>a.d.localeCompare(b.d));const pts=o.map((_,i)=>[30+i*(240/Math.max(o.length-1,1)),i%2?110:50]);
+ const t=i=>{const m=390+i*9;return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0")};
+ return `<h2>Rota sugerida de hoje</h2><div class="card"><svg viewBox="0 0 300 150" width="100%" role="img" aria-label="Mapa da rota"><polyline points="${pts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="var(--rt)" stroke-width="4" stroke-dasharray="8 6"/>${pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="11" fill="var(--rt)"/><text x="${p[0]}" y="${p[1]+4}" text-anchor="middle" fill="#fff" font-size="12" font-weight="800">${i+1}</text>`).join("")}</svg>
+ ${o.map((c,i)=>`<div class="stop"><div class="dot">${i+1}</div><div><b>${t(i)} · ${c.n}</b><div class="mut">${c.d}</div></div></div>`).join("")}
+ <a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(o[o.length-1].e+", São Paulo")}&waypoints=${encodeURIComponent(o.map(c=>c.d+", São Paulo").join("|"))}" target="_blank" rel="noopener">Abrir navegação no Google Maps</a></div>`}
+function payV(u){const k=db.kids[u.email]||[],rec=db.pays.filter(p=>p.to===u.email);
+ return `<h2>Pagamentos</h2><div class="card"><b>Recebidos pelo app</b>${rec.length?rec.map(p=>`<div class="row" style="padding:6px 0"><span>${p.from} · ${p.d}</span><b style="color:var(--ok)">${brl(p.v)}</b></div>`).join(""):`<p class="mut" style="margin:4px 0 0">Ainda nenhum. Os pais pagam pela aba Pagar do app deles.</p>`}</div>
+ <div class="card scroll"><table><tr><th>Criança</th><th>Mensalidade</th><th>Status</th></tr>${k.map((c,i)=>`<tr><td>${c.n}</td><td>${brl(420)}</td><td><button class="tag ${c.pg?"ok":"bad"}" style="border:0;cursor:pointer" onclick="db.kids[db.s][${i}].pg=${c.pg?0:1};save();render()">${c.pg?"Pago":"Pendente"}</button></td></tr>`).join("")}</table></div>`}
+
+/* ---------- CLIENTE ---------- */
+function cV(u){const t=TR.find(x=>x.id===db.pick[u.email]);let h=head(u);
+ if(tab==="b")h+=searchV(u);
+ if(tab==="l")h+=!t?need("Escolha um transportador na aba Buscar para acompanhar o trajeto."):trackV(t);
+ if(tab==="p")h+=!t?need("Escolha um transportador na aba Buscar para pagar."):`<h2>Pagamento</h2><div class="card"><div class="mut">Transportador</div><h3>${t.n}</h3><div style="font-size:32px;font-weight:900;margin:8px 0">${brl(t.p)}</div><p class="mut">Mensalidade de ${new Date().toLocaleDateString("pt-BR",{month:"long"})}</p><button class="btn" onclick="pay('Pix')">Pagar com Pix</button><div style="height:8px"></div><button class="btn alt" onclick="pay('Cartão')">Pagar com cartão</button></div><div class="card"><b>Seus pagamentos</b>${db.pays.filter(p=>p.from===u.n).map(p=>`<div class="row" style="padding:6px 0"><span>${p.d} · ${p.m}</span><b>${brl(p.v)}</b></div>`).join("")||`<p class="mut" style="margin:4px 0 0">Nenhum pagamento ainda.</p>`}</div>`;
+ if(tab==="c")h+=!t?need("Escolha um transportador na aba Buscar para conversar."):chatV(u,t);
+ return `<div>${h}</div>`+nav(CTABS)}
+const need=x=>`<div class="card" style="text-align:center"><div style="font-size:36px">🚌</div><p>${x}</p><button class="btn" onclick="go('b')">Ir para Buscar</button></div>`;
+function searchV(u){const cur=db.pick[u.email];
+ let h=`<h2>Encontre o transporte</h2><div class="card"><label>Escola do seu filho</label><select id="ss">${SC.map((s,i)=>`<option value="${i}" ${i===sch?"selected":""}>${s}</option>`).join("")}</select><label>Região onde a criança mora</label><select id="sr">${R.map((s,i)=>`<option value="${i}" ${i===reg?"selected":""}>${s}</option>`).join("")}</select><button class="btn" onclick="sch=+$('#ss').value;reg=+$('#sr').value;searched=true;render()">Ver transportadores</button></div>`;
+ if(searched){const l=TR.filter(t=>t.s.includes(sch));
+  h+=l.length?l.map(t=>{const ok=t.r.includes(reg);return `<div class="card"><div class="row"><h3>${t.n}</h3><span>⭐ ${t.a}</span></div><div class="mut">${t.v} · atende ${t.r.map(i=>R[i]).join(", ")}</div><div class="row" style="margin:8px 0"><span class="tag ${t.vg?"ok":"bad"}">${t.vg?t.vg+" vaga"+(t.vg>1?"s":""):"Sem vagas"}</span><span class="tag">${ok?"Atende sua região":"Região diferente"}</span><b>~${brl(t.p)}/mês</b></div><button class="btn" ${t.vg?"":"disabled style='opacity:.5'"} onclick="choose('${t.id}')">${cur===t.id?"✓ Selecionado":"Escolher este transportador"}</button></div>`}).join(""):`<div class="card mut">Nenhum transportador atende esta escola ainda.</div>`}
+ return h}
+function choose(id){db.pick[db.s]=id;save();toast("Transportador selecionado. Veja Rastrear, Pagar e Chat.");render()}
+function pay(m){const u=me(),t=TR.find(x=>x.id===db.pick[u.email]);db.pays.push({from:u.n,to:t.id,v:t.p,m,d:new Date().toLocaleDateString("pt-BR")});save();toast("Pagamento de "+brl(t.p)+" enviado (simulação).");render()}
+function trackV(t){return `<h2>Onde está a van</h2><div class="card"><div class="row"><h3>${t.n}</h3><b id="eta"></b></div><svg viewBox="0 0 300 160" width="100%" role="img" aria-label="Mapa de rastreio"><path d="M20 130 L110 120 L150 70 L280 40" fill="none" stroke="var(--bd)" stroke-width="10" stroke-linecap="round"/><path d="M20 130 L110 120 L150 70 L280 40" fill="none" stroke="var(--rt)" stroke-width="3" stroke-dasharray="7 6"/><text x="280" y="28" text-anchor="middle" font-size="22">🏠</text><g id="van"><circle r="14" fill="var(--pri)" stroke="var(--on)" stroke-width="2"/><text y="6" text-anchor="middle" font-size="16">🚐</text></g></svg><p class="mut" id="st"></p><button class="btn alt" onclick="eta=12;warned=false;track()">Reiniciar simulação</button><p class="mut" style="font-size:12px">Simulação: 1 segundo equivale a 1 minuto. O aviso chega quando faltarem 5 minutos.</p></div>`}
+function track(){clearInterval(timer);const P=[[20,130],[110,120],[150,70],[280,40]];
+ try{if("Notification" in window&&Notification.permission==="default")Notification.requestPermission()}catch(e){}
+ const draw=()=>{const f=Math.min(Math.max(1-eta/12,0),1)*3,i=Math.min(Math.floor(f),2),k=f-i,a=P[i],b=P[i+1];
+  const v=$("#van");if(!v){clearInterval(timer);return}v.setAttribute("transform",`translate(${a[0]+(b[0]-a[0])*k},${a[1]+(b[1]-a[1])*k})`);
+  $("#eta").textContent=eta>0?"Chega em "+eta+" min":"Chegou!";$("#st").textContent=eta>5?"A van está a caminho.":eta>0?"Quase lá! Leve seu filho até o portão.":"A van chegou ao embarque."};
+ draw();timer=setInterval(()=>{if(eta>0)eta--;draw();
+  if(eta<=5&&!warned){warned=true;toast("🚐 A van chega em 5 minutos. Deixe a criança pronta!");try{if("Notification" in window&&Notification.permission==="granted")new Notification("Van Escolar SP",{body:"O transportador chega em 5 minutos."})}catch(e){}}
+  if(eta<=0)clearInterval(timer)},1000)}
+function chatV(u,t){const m=db.chat[u.email+t.id]||[{f:"t",x:"Olá! Sou "+t.n.split(" ")[0]+". Como posso ajudar?"}];
+ return `<h2>Chat com ${t.n.split(" ")[0]}</h2><div class="card"><div class="msgs">${m.map(x=>`<div class="m ${x.f}">${x.x}</div>`).join("")}</div><div class="row"><input id="cm" placeholder="Escreva uma mensagem" style="margin:0" onkeydown="if(event.key==='Enter')send()"><button class="btn sm" onclick="send()">Enviar</button></div></div>`}
+function send(){const u=me(),t=TR.find(x=>x.id===db.pick[u.email]),x=$("#cm").value.trim();if(!x)return;const k=u.email+t.id;
+ db.chat[k]=db.chat[k]||[{f:"t",x:"Olá! Sou "+t.n.split(" ")[0]+". Como posso ajudar?"}];db.chat[k].push({f:"me",x});save();render();
+ setTimeout(()=>{db.chat[k].push({f:"t",x:"Recebi sua mensagem! Já te respondo."});save();if(tab==="c"&&db.s===u.email)render()},1200)}
+render();
+</script>
+</body>
+</html>

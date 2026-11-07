@@ -1,0 +1,144 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account profile for parents, drivers, and regulators",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 100 },
+        "role": { "type": "string", "enum": ["c", "t", "a"] },
+        "phone": { "type": "string", "maxLength": 20 },
+        "cpf": { "type": "string", "maxLength": 20 },
+        "subscriptionTier": { "type": "string", "enum": ["free", "pro", "premium"] },
+        "status": { "type": "string", "enum": ["ativo", "suspenso", "bloqueado_serasa"] },
+        "createdAt": { "type": "string", "maxLength": 40 }
+      },
+      "required": ["email", "name", "role"]
+    },
+    "TransporterProfile": {
+      "title": "TransporterProfile",
+      "description": "Transporter van profile including accreditation and fleet details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 128 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "vanModel": { "type": "string", "maxLength": 60 },
+        "licensePlate": { "type": "string", "maxLength": 12 },
+        "capacity": { "type": "number" },
+        "subscriptionTier": { "type": "string", "enum": ["free", "pro", "premium"] },
+        "isVerified": { "type": "boolean" }
+      },
+      "required": ["id", "name", "email"]
+    },
+    "StudentItem": {
+      "title": "StudentItem",
+      "description": "Student record enrolled with a transporter",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 100 },
+        "parentEmail": { "type": "string", "maxLength": 128 },
+        "transporterEmail": { "type": "string", "maxLength": 128 },
+        "school": { "type": "string", "maxLength": 150 },
+        "address": { "type": "string", "maxLength": 200 },
+        "pg": { "type": "number" },
+        "paymentStatus": { "type": "string", "enum": ["pago", "pendente", "abonado", "atrasado"] }
+      },
+      "required": ["id", "name", "parentEmail", "transporterEmail"]
+    },
+    "ContractRecord": {
+      "title": "ContractRecord",
+      "description": "Legally compliant school transportation service agreement",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "transporterEmail": { "type": "string", "maxLength": 128 },
+        "transporterName": { "type": "string", "maxLength": 100 },
+        "parentEmail": { "type": "string", "maxLength": 128 },
+        "parentName": { "type": "string", "maxLength": 100 },
+        "childName": { "type": "string", "maxLength": 100 },
+        "agreedMonthlyValue": { "type": "number" },
+        "period": { "type": "string", "maxLength": 30 },
+        "status": { "type": "string", "enum": ["proposta_enviada", "revisado_pelo_pai", "assinado_ativo", "cancelado", "recusado"] }
+      },
+      "required": ["id", "transporterEmail", "parentEmail", "childName", "status"]
+    },
+    "SupportTicket": {
+      "title": "SupportTicket",
+      "description": "Official support inquiries from families and drivers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "userEmail": { "type": "string", "maxLength": 128 },
+        "userName": { "type": "string", "maxLength": 100 },
+        "subject": { "type": "string", "maxLength": 120 },
+        "category": { "type": "string", "maxLength": 60 },
+        "message": { "type": "string", "maxLength": 1000 },
+        "status": { "type": "string", "enum": ["aberto", "em_atendimento", "resolvido"] },
+        "createdAt": { "type": "string", "maxLength": 40 }
+      },
+      "required": ["id", "userEmail", "subject", "message", "status"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Direct interaction message between parent and transporter",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "chatKey": { "type": "string", "maxLength": 128 },
+        "f": { "type": "string", "maxLength": 10 },
+        "senderName": { "type": "string", "maxLength": 100 },
+        "x": { "type": "string", "maxLength": 1000 },
+        "time": { "type": "string", "maxLength": 30 }
+      },
+      "required": ["id", "chatKey", "f", "x"]
+    },
+    "OpportunityItem": {
+      "title": "OpportunityItem",
+      "description": "Quote request posted by a parent for transporters",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "parentEmail": { "type": "string", "maxLength": 128 },
+        "parentName": { "type": "string", "maxLength": 100 },
+        "school": { "type": "string", "maxLength": 150 },
+        "district": { "type": "string", "maxLength": 100 },
+        "status": { "type": "string", "enum": ["aberta", "em_negociacao", "fechada"] }
+      },
+      "required": ["id", "parentEmail", "school", "district"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "User account documents stored per UID"
+    },
+    "/transporters/{transporterId}": {
+      "schema": { "$ref": "#/entities/TransporterProfile" },
+      "description": "Accredited school bus drivers and vehicle profiles"
+    },
+    "/students/{studentId}": {
+      "schema": { "$ref": "#/entities/StudentItem" },
+      "description": "Registered students and route stops"
+    },
+    "/contracts/{contractId}": {
+      "schema": { "$ref": "#/entities/ContractRecord" },
+      "description": "Digital transportation agreements between parents and drivers"
+    },
+    "/support_tickets/{ticketId}": {
+      "schema": { "$ref": "#/entities/SupportTicket" },
+      "description": "Platform customer support and DTP consultation tickets"
+    },
+    "/chats/{chatId}": {
+      "schema": { "$ref": "#/entities/ChatMessage" },
+      "description": "Messaging thread documents"
+    },
+    "/opportunities/{oppId}": {
+      "schema": { "$ref": "#/entities/OpportunityItem" },
+      "description": "New student transport opportunities"
+    }
+  }
+}
